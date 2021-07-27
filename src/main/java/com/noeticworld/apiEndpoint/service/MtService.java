@@ -38,7 +38,7 @@ public class MtService {
         for(int j=0; j<1;j++){
             this.serviceId= partnerServiceConfigEntity.get(0).getMt_serviceid();
         }
-        System.out.println(this.serviceId);
+       // System.out.println(this.serviceId);
         try {
             Unirest.setTimeouts(120, 120);
             HttpResponse<String> response1 = Unirest.post(Constants.MTURL)
@@ -55,7 +55,7 @@ public class MtService {
     }
 
     public String decryptmsisdn(String Base64String) throws Exception {
-        System.out.println("decrypting " +secret);
+       // System.out.println("decrypting " +secret);
         setKey(secret);
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -63,7 +63,7 @@ public class MtService {
         byte[] two = cipher.doFinal(one);
 
         String msisdn1 = new String(two, "UTF-8");
-        System.out.println("original msisdn:" +msisdn1);
+     //   System.out.println("original msisdn:" +msisdn1);
 
 
         return msisdn1;

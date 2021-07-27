@@ -7,26 +7,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/timwe/")
 public class ApiController {
     Logger log = LoggerFactory.getLogger(ApiController.class);
 
     @Autowired
     MtService mtService;
-    @PostMapping(value = "/mtData")
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping(value = "/mtapi")
     public ResponseEntity<?> receiveData(@RequestBody HTTPRequestHandler httpRequestHandler) {
-        System.out.println(httpRequestHandler.getMsisdn()+"\n"
-                +httpRequestHandler.getTransId()+"\n"
-                +httpRequestHandler.getShortcode()+"\n"
-                +httpRequestHandler.getData()+"\n"
-                +httpRequestHandler.getUsername()+"\n"
-                +httpRequestHandler.getPassword());
+//        System.out.println(httpRequestHandler.getMsisdn()+"\n"
+//                +httpRequestHandler.getTransId()+"\n"
+//                +httpRequestHandler.getShortcode()+"\n"
+//                +httpRequestHandler.getData()+"\n"
+//                +httpRequestHandler.getUsername()+"\n"
+//                +httpRequestHandler.getPassword());
         try{
             mtService.SendMt(httpRequestHandler);
         }

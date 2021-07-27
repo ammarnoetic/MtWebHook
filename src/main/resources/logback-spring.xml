@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-<!--        <property name="LOGS" value="/var/log/apps/mtapi"/>-->
+        <property name="LOGS" value="/var/log/apps/mtapi"/>
     <!--//for local testing-->
-    <property name="LOGS" value="MTAPILOGS"/>
+<!--    <property name="LOGS" value="MTAPILOGS"/>-->
 
 
     <appender name="Console"
@@ -33,19 +33,19 @@
     </appender>
 
     <!-- LOG everything at INFO level -->
-    <root level="info">
+    <root level="error">
         <appender-ref ref="Console"/>
     </root>
 
     <!-- LOG "com.baeldung*" at TRACE level -->
     <logger name="com.noeticworld.apiEndpoint" level="trace" additivity="false">
         <appender-ref ref="RollingFile"/>
-        <appender-ref ref="Console"/>
+<!--        <appender-ref ref="Console"/>-->
     </logger>
 
     <logger name="com.noeticworld.apiEndpoint" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
-        <appender-ref ref="Console"/>
+<!--        <appender-ref ref="Console"/>-->
     </logger>
 
 
