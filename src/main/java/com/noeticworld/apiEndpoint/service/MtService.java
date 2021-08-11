@@ -45,7 +45,8 @@ public class MtService {
                     .header("Content-Type", "application/json")
                     .body("{\n    \"username\" :\"" + httpRequestHandler.getUsername() + "\",\n    \"password\":\"" + httpRequestHandler.getPassword() + "\",\n    \"shortCode\":\"" + httpRequestHandler.getShortcode() + "\",\n    \"serviceId\":" + this.serviceId + ",\n    \"data\":\"" + httpRequestHandler.getData() + "\",\n    \"msisdn\":\"" + decryptmsisdn(httpRequestHandler.getMsisdn()) + "\"\n}")
                     .asString();
-            log.info("Response From MT" + response1.getStatusText());
+            log.info("Response From MT " + response1.getStatusText() + httpRequestHandler.getData());
+
 
         } catch (UnirestException e) {
             log.info("Exception Sending mt: "+e.getMessage() +" for username "+httpRequestHandler.getUsername());
