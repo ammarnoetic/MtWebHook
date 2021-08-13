@@ -40,7 +40,7 @@ public class MtService {
         }
        // System.out.println(this.serviceId);
         try {
-            Unirest.setTimeouts(10000, 60000);
+           // Unirest.setTimeouts(10000, 60000);
             HttpResponse<String> response1 = Unirest.post(Constants.MTURL)
                     .header("Content-Type", "application/json")
                     .body("{\n    \"username\" :\"" + httpRequestHandler.getUsername() + "\",\n    \"password\":\"" + httpRequestHandler.getPassword() + "\",\n    \"shortCode\":\"" + httpRequestHandler.getShortcode() + "\",\n    \"serviceId\":" + this.serviceId + ",\n    \"data\":\"" + httpRequestHandler.getData() + "\",\n    \"msisdn\":\"" + decryptmsisdn(httpRequestHandler.getMsisdn()) + "\"\n}")
