@@ -33,19 +33,19 @@ public class MtService {
 
     public void SendMt(HTTPRequestHandler httpRequestHandler) throws Exception {
         Logger log = LoggerFactory.getLogger(MtService.class);
-      // String originalMsisdn = decryptmsisdn(httpRequestHandler.getMsisdn());
+         String originalMsisdn = decryptmsisdn(httpRequestHandler.getMsisdn());
         List<PartnerServiceConfigEntity> partnerServiceConfigEntity = partnerServiceConfigRepo.findByShortcodeAndUsername(httpRequestHandler.getShortcode(),httpRequestHandler.getUsername());
         for(int j=0; j<1;j++){
             this.serviceId= partnerServiceConfigEntity.get(0).getMt_serviceid();
         }
        // System.out.println(this.serviceId);
         try {
-           // Unirest.setTimeouts(10000, 60000);
+        //   Unirest.setTimeouts(10000, 60000);
             HttpResponse<String> response1 = Unirest.post(Constants.MTURL)
                     .header("Content-Type", "application/json")
-                    .body("{\n    \"username\" :\"" + httpRequestHandler.getUsername() + "\",\n    \"password\":\"" + httpRequestHandler.getPassword() + "\",\n    \"shortCode\":\"" + httpRequestHandler.getShortcode() + "\",\n    \"serviceId\":" + this.serviceId + ",\n    \"data\":\"" + httpRequestHandler.getData() + "\",\n    \"msisdn\":\"" + decryptmsisdn(httpRequestHandler.getMsisdn()) + "\"\n}")
+                    .body("{\n    \"username\" :\"" + httpRequestHandler.getUsername() + "\",\n    \"password\":\"" + httpRequestHandler.getPassword() + "\",\n    \"shortCode\":\"" + httpRequestHandler.getShortcode() + "\",\n    \"serviceId\":" + this.serviceId + ",\n    \"data\":\"" + httpRequestHandler.getData() + "\",\n    \"msisdn\":\"" + originalMsisdn + "\"\n}")
                     .asString();
-            log.info("Response From MT " + response1.getStatusText() + httpRequestHandler.getData());
+            log.info("Response From MT for misidn is "+originalMsisdn+ " " +  httpRequestHandler.getData());
 
 
         } catch (UnirestException e) {

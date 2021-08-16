@@ -19,12 +19,12 @@ public class ApiController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/mtapi")
     public ResponseEntity<?> receiveData(@RequestBody HTTPRequestHandler httpRequestHandler) {
-//        System.out.println(httpRequestHandler.getMsisdn()+"\n"
-//                +httpRequestHandler.getTransId()+"\n"
-//                +httpRequestHandler.getShortcode()+"\n"
-//                +httpRequestHandler.getData()+"\n"
-//                +httpRequestHandler.getUsername()+"\n"
-//                +httpRequestHandler.getPassword());
+        log.info(httpRequestHandler.getMsisdn()+"\n"
+                +httpRequestHandler.getTransId()+"\n"
+                +httpRequestHandler.getShortcode()+"\n"
+                +httpRequestHandler.getData()+"\n"
+                +httpRequestHandler.getUsername()+"\n"
+                +httpRequestHandler.getPassword());
         try{
             mtService.SendMt(httpRequestHandler);
         }
