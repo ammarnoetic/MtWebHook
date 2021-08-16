@@ -25,15 +25,17 @@ public class ApiController {
                 +httpRequestHandler.getData()+"\n"
                 +httpRequestHandler.getUsername()+"\n"
                 +httpRequestHandler.getPassword());
+        String s ;
         try{
-            mtService.SendMt(httpRequestHandler);
+           s = mtService.SendMt(httpRequestHandler);
+
         }
         catch(Exception e){
-            return ResponseEntity.ok("failure");
+            log.info("Failed to send MT");
+            return ResponseEntity.ok("Failure");
 
         }
-
-        return ResponseEntity.ok("success");
+      return ResponseEntity.ok("Successfuly Sent MT");
 
     }
 

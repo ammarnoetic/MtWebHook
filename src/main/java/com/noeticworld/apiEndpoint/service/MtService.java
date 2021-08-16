@@ -31,9 +31,12 @@ public class MtService {
     private  byte[] key = null;
     private String secret = "po90ki8u76gt";
 
-    public void SendMt(HTTPRequestHandler httpRequestHandler) throws Exception {
+    public String SendMt(HTTPRequestHandler httpRequestHandler) throws Exception {
         Logger log = LoggerFactory.getLogger(MtService.class);
          String originalMsisdn = decryptmsisdn(httpRequestHandler.getMsisdn());
+         if (!(originalMsisdn.startsWith("92"))){
+             return "Error in Encrypted MSISDN";
+         }
         List<PartnerServiceConfigEntity> partnerServiceConfigEntity = partnerServiceConfigRepo.findByShortcodeAndUsername(httpRequestHandler.getShortcode(),httpRequestHandler.getUsername());
         for(int j=0; j<1;j++){
             this.serviceId= partnerServiceConfigEntity.get(0).getMt_serviceid();
@@ -45,14 +48,16 @@ public class MtService {
                     .header("Content-Type", "application/json")
                     .body("{\n    \"username\" :\"" + httpRequestHandler.getUsername() + "\",\n    \"password\":\"" + httpRequestHandler.getPassword() + "\",\n    \"shortCode\":\"" + httpRequestHandler.getShortcode() + "\",\n    \"serviceId\":" + this.serviceId + ",\n    \"data\":\"" + httpRequestHandler.getData() + "\",\n    \"msisdn\":\"" + originalMsisdn + "\"\n}")
                     .asString();
-            log.info("Response From MT for misidn is "+originalMsisdn+ " " +  httpRequestHandler.getData());
+            log.info("Response From MT for msisdn is "+originalMsisdn+ " " +  httpRequestHandler.getData());
 
 
         } catch (UnirestException e) {
             log.info("Exception Sending mt: "+e.getMessage() +" for username "+httpRequestHandler.getUsername());
-            e.printStackTrace();
-        }
 
+            e.printStackTrace();
+            return "error occured";
+        }
+        return "Success";
     }
 
     public String decryptmsisdn(String Base64String) throws Exception {
