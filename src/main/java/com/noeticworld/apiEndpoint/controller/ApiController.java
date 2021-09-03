@@ -1,7 +1,6 @@
 package com.noeticworld.apiEndpoint.controller;
 
 import com.noeticworld.apiEndpoint.model.HTTPRequestHandler;
-import com.noeticworld.apiEndpoint.repositories.PartnerServiceConfigRepo;
 import com.noeticworld.apiEndpoint.service.MtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +24,9 @@ public class ApiController {
                 +httpRequestHandler.getData()+"\n"
                 +httpRequestHandler.getUsername()+"\n"
                 +httpRequestHandler.getPassword());
-        String s ;
-        try{
-           s = mtService.SendMt(httpRequestHandler);
 
+        try{
+            mtService.SendMt(httpRequestHandler);
         }
         catch(Exception e){
             log.info("Failed to send MT");

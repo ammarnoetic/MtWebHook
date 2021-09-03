@@ -45,7 +45,7 @@
 
     <logger name="com.noeticworld.apiEndpoint" level="info" additivity="false">
         <appender-ref ref="RollingFile"/>
-        <appender-ref ref="Console"/>
+<!--        <appender-ref ref="Console"/>-->
     </logger>
 
 
