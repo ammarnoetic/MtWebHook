@@ -1,11 +1,30 @@
 package com.noeticworld.apiEndpoint.model;
 
+import org.hibernate.annotations.JoinColumnOrFormula;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class HTTPRequestHandler {
-    private String username,password, msisdn, data, shortcode, transId;
-    Logger log = LoggerFactory.getLogger(HTTPRequestHandler.class);
+    @Id
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "msisdn")
+    private String msisdn;
+    @Column(name = "data")
+    private String data;
+    @Column(name = "shortcode")
+    private  String shortcode;
+    @Column(name = "transId")
+    private String transId;
+
+    //Logger log = LoggerFactory.getLogger(HTTPRequestHandler.class);
 
     public String getUsername() {
         return username;

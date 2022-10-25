@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.noeticworld.apiEndpoint.model.HTTPRequestHandler;
 import com.noeticworld.apiEndpoint.model.PartnerServiceConfigEntity;
+import com.noeticworld.apiEndpoint.repositories.HttpRequestHandlerRepo;
 import com.noeticworld.apiEndpoint.repositories.PartnerServiceConfigRepo;
 import com.noeticworld.apiEndpoint.util.Constants;
 import org.slf4j.Logger;
@@ -25,22 +26,26 @@ public class MtService {
 
     @Autowired
     PartnerServiceConfigRepo partnerServiceConfigRepo;
+    @Autowired
+    HttpRequestHandlerRepo httpRequestHandlerRepo;
     public static String serviceId;
 
     private SecretKeySpec secretKey;
-    private  byte[] key = null;
-    private String secret = "po90ki8u76gt";
 
-    public String SendMt(HTTPRequestHandler httpRequestHandler) throws Exception {
+    public String   SendMt(HTTPRequestHandler httpRequestHandler) throws Exception {
         Logger log = LoggerFactory.getLogger(MtService.class);
          String originalMsisdn = decryptmsisdn(httpRequestHandler.getMsisdn());
+        System.out.println("check");
          if (!(originalMsisdn.startsWith("92"))){
              return "Error in Encrypted MSISDN";
          }
+
         List<PartnerServiceConfigEntity> partnerServiceConfigEntity = partnerServiceConfigRepo.findByShortcodeAndUsername(httpRequestHandler.getShortcode(),httpRequestHandler.getUsername());
         for(int j=0; j<1;j++){
             this.serviceId= partnerServiceConfigEntity.get(0).getMt_serviceid();
+
         }
+        System.out.println("checking");
        // System.out.println(this.serviceId);
         try {
         //   Unirest.setTimeouts(10000, 60000);
@@ -61,14 +66,20 @@ public class MtService {
     }
 
     public String decryptmsisdn(String Base64String) throws Exception {
-       // System.out.println("decrypting " +secret);
+        //System.out.println("decrypting " +secret);
+        String secret = "po90ki8u76gt";
         setKey(secret);
+        System.out.println("decrypt");
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        System.out.println("cipher");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        System.out.println("line 74");
         byte[] one = Base64.getDecoder().decode(Base64String.getBytes("UTF-8"));
+        System.out.println("line 76");
         byte[] two = cipher.doFinal(one);
 
         String msisdn1 = new String(two, "UTF-8");
+
      //   System.out.println("original msisdn:" +msisdn1);
 
 
@@ -76,23 +87,33 @@ public class MtService {
     }
 
     public void setKey(String myKey) {
-        MessageDigest sha = null;
+        MessageDigest sha;
+        byte[] key;
         try {
 
             key = myKey.getBytes("UTF-8");
-            // System.out.println("key after utf 8 conversion "+key);
+             System.out.println("key after utf 8 conversion "+key);
             sha = MessageDigest.getInstance("SHA-1");
-            // System.out.println("sha "+ sha);
+             System.out.println("sha "+ sha);
             key = sha.digest(key);
-            // System.out.println("key after digest " +key);
+             System.out.println("key after digest " +key);
             key = Arrays.copyOf(key, 16);
-            //System.out.println("key after arrays.copyof "+key);
+            System.out.println("key after arrays.copyof "+key);
             secretKey = new SecretKeySpec(key, "AES");
-            // System.out.println("secretkey "+secretKey);
+             System.out.println("secretkey "+secretKey);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
+
+    public void saveInfo(HTTPRequestHandler httpRequestHandler) {
+        httpRequestHandlerRepo.save(httpRequestHandler);
+    }
+
+
+//    public void saveInfo(HTTPRequestHandler httpRequestHandler) {
+//        partnerServiceConfigRepo.saveAll(httpRequestHandler);
+//    }
 }
